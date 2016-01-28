@@ -1,2 +1,2 @@
 # aws-lambda-local-testing
-Testing AWS Lambda function locally
+This is an example how we can test AWS Lambda functions locally with reproducing all possible variants of function invocation (S3, DynamoDB, etc.).
