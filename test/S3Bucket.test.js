@@ -1,9 +1,29 @@
-/** Our S3 handler */
-var handler = require('../index').handlerS3;
+var Lab = require('lab');
+var Code = require('code');
+var lab = exports.lab = Lab.script();
 
-/** Mock event */
-var lambdaEvent = require('../lib/lambdaEvent');
-var S3Event = new lambdaEvent.S3({ region: 'us-west-2', bucketArn: 'arn:1', 'eventName': 'Test Notification 2222' });
+var describe = lab.describe;
+var it = lab.it;
+var beforeEach = lab.beforeEach;
+var expect = Code.expect;
 
-console.dir(S3Event);
-console.log(S3Event.trigger(handler))
+var handler = require('../index').handlerS3; // Our S3 handler
+var lambdaEvent = require('../lib/lambdaEvent'); // Mock event
+
+describe('S3 Bucket handler',  function() {
+  var S3Event;
+
+  beforeEach(function(done) {
+    S3Event = new lambdaEvent.S3({ region: 'us-west-2', objectName: 'test.json' });
+    S3Event.invoke(handler);
+    done();
+  });
+
+  it('should complete with succeed', function(done) {
+    expect(S3Event.succeedCallCount).equals(1);
+    expect(S3Event.invocationResult).to.be.an.array();
+    expect(S3Event.invocationResult).to.have.length(1);
+    expect(S3Event.invocationResult[0].fileName).equals('test.json');
+    done();
+  });
+});
