@@ -75,6 +75,7 @@ function initAWSDynamoDB(options) {
     var keyObj = {};
     var keyType = {};
 
+    // TODO: Implement unified parser for schema types.
     switch (options.schema[options.schema.primaryKey].toLowerCase()) {
       case 'string':
         keyType.S = options.item[options.schema.primaryKey];
@@ -95,7 +96,30 @@ function initAWSDynamoDB(options) {
   }
 
   function getImage() {
-    return {};
+    var imageObj = {};
+
+    for (var key in options.item) {
+      var type = {};
+
+      // TODO: Implement unified parser for schema types.
+      switch (options.schema[key].toLowerCase()) {
+        case 'string':
+          type.S = options.item[key];
+          break;
+        case 'number':
+          type.N = options.item[key];
+          break;
+        case 'binary':
+          type.B = options.item[key];
+          break;
+        default:
+          type.S = options.item[key];
+      }
+
+      imageObj[key] = type;
+    }
+
+    return imageObj;
   }
 }
 

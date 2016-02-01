@@ -16,7 +16,7 @@ describe('DynamoDB handler',  function() {
   var inputObj;
 
   beforeEach(function(done) {
-    schema = { id: 'STRING', name: 'STRING', primaryKey: 'id' };
+    schema = { id: 'NUMBER', name: 'STRING', primaryKey: 'id' };
     inputObj = { id: 55, name: 'test' };
     DynamoDBEvent = new lambdaEvent.DynamoDB({ schema: schema, region: 'us-west-2', objectName: 'test.json', eventType: 'INSERT', item: inputObj });
     DynamoDBEvent.invoke(handler);
@@ -24,11 +24,8 @@ describe('DynamoDB handler',  function() {
   });
 
   it('should complete with succeed', function(done) {
-    // expect(DynamoDBEvent.succeedCallCount).equals(1);
-    // expect(DynamoDBEvent.invocationResult).to.be.an.array();
-    // expect(DynamoDBEvent.invocationResult).to.have.length(1);
-    // expect(DynamoDBEvent.invocationResult[0].fileName).equals('test.json');
-    // expect(DynamoDBEvent.invocationResult[0].type).equals('Put');
+    expect(DynamoDBEvent.event.Records[0].dynamodb.NewImage.id.N).equals(5);
+    expect(DynamoDBEvent.event.Records[0].dynamodb.NewImage.name.S).equals('test');
     done();
   });
 });
