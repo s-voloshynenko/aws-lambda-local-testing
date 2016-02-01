@@ -8,7 +8,7 @@ var beforeEach = lab.beforeEach;
 var expect = Code.expect;
 
 var handler = require('../index').handlerS3; // Our S3 handler
-var lambdaEvent = require('../lib/lambdaEvent'); // Mock event
+var lambdaEvent = require('./utils/lambdaEvent'); // Mock event
 
 describe('S3 Bucket handler',  function() {
   var S3Event;

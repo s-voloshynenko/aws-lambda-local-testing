@@ -7,13 +7,13 @@ var it = lab.it;
 var beforeEach = lab.beforeEach;
 var expect = Code.expect;
 
-var handler = require('../index').handlerAPIGateway; // Our S3 handler
-var lambdaEvent = require('../lib/lambdaEvent'); // Mock event
+var handler = require('../index').handlerAPIGateway; // Our API Gateway handler
+var lambdaEvent = require('./utils/lambdaEvent'); // Mock event
 
 describe('API Gateway handler',  function() {
   var APIGatewayEvent;
 
-  describe('succeed result', function() {
+  describe('succeeded result', function() {
     beforeEach(function(done) {
       APIGatewayEvent = new lambdaEvent.APIGateway({ template: { stage: 'prod', id: 1 } });
       APIGatewayEvent.invoke(handler);
@@ -32,7 +32,7 @@ describe('API Gateway handler',  function() {
     });
   });
 
-  describe('fail result', function() {
+  describe('failed result', function() {
     beforeEach(function(done) {
       APIGatewayEvent = new lambdaEvent.APIGateway({ template: { stage: 'ci', id: 2 } });
       APIGatewayEvent.invoke(handler);

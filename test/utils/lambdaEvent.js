@@ -5,5 +5,6 @@
 
 module.exports = {
   S3: require('./services/s3'),
-  APIGateway: require('./services/apiGateway')
+  APIGateway: require('./services/apiGateway'),
+  DynamoDB: require('./services/dynamoDB')
 };

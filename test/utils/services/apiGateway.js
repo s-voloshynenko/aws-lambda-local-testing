@@ -26,11 +26,13 @@ function initAPIGateway(options) {
       return self.startAt - self.endAt;
     },
     succeed: function(data) {
+      self.endAt = new Date().getTime();
       self.succeedCallCount++;
       self.invocationResult = data;
       return data;
     },
     fail: function(error) { // TODO: Substring error message[1].
+      self.endAt = new Date().getTime();
       self.failCallCount++;
       self.invocationResult = { error: error };
       return error;
@@ -57,6 +59,7 @@ initAPIGateway.prototype._options = {
 
 // TODO: Implement function handler
 initAPIGateway.prototype.invoke = function(fn) {
+  this.startAt = new Date().getTime();
   return fn(this.event, this.context);
 };
 
@@ -69,7 +72,7 @@ initAPIGateway.prototype.failCallCount = 0;
 initAPIGateway.prototype.doneCallCount = 0;
 
 /** Function time execution */
-initAPIGateway.prototype.startAt = new Date().getTime();
-initAPIGateway.prototype.endAt = new Date().getTime();
+initAPIGateway.prototype.startAt = 0;
+initAPIGateway.prototype.endAt = 0;
 
 module.exports = initAPIGateway;
