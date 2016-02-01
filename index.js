@@ -1,4 +1,5 @@
 /**
+ * AWS S3
  * Collect base info of uploaded/removed file 
  */
 exports.handlerS3 = function(event, context) {
@@ -16,4 +17,41 @@ exports.handlerS3 = function(event, context) {
   context.succeed(bucketUpdates);
 };
 
-/** DynamoDB, API Gateway, etc. in progress.. */
+/**
+ * AWS API Gateway
+ * Provide users by ID
+ */
+exports.handlerAPIGateway = function(event, context) {
+  MockUserService(event, function(err, user) {
+    if (err) return context.fail(err);
+
+    context.succeed(user);
+  });
+};
+
+var Users = {
+  prod: {
+    1: {
+      name: 'Sergey',
+      role: 'dev'
+    },
+    2: {
+      name: 'Max',
+      role: 'dev'
+    }
+  },
+  ci: {
+    1: {
+      name: 'Alex',
+      role: 'PM'
+    }
+  }
+};
+
+function MockUserService(event, cb) {
+  if (!Users[event.stage] || !Users[event.stage][event.id]) return cb('Current user doesn\'t exist.');
+
+  cb(null, Users[event.stage][event.id]);
+}
+
+/** DynamoDB, etc. in progress.. */

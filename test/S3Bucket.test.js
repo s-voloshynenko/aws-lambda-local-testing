@@ -14,7 +14,7 @@ describe('S3 Bucket handler',  function() {
   var S3Event;
 
   beforeEach(function(done) {
-    S3Event = new lambdaEvent.S3({ region: 'us-west-2', objectName: 'test.json' });
+    S3Event = new lambdaEvent.S3({ region: 'us-west-2', objectName: 'test.json', eventType: 'Object:Put' });
     S3Event.invoke(handler);
     done();
   });
@@ -24,6 +24,7 @@ describe('S3 Bucket handler',  function() {
     expect(S3Event.invocationResult).to.be.an.array();
     expect(S3Event.invocationResult).to.have.length(1);
     expect(S3Event.invocationResult[0].fileName).equals('test.json');
+    expect(S3Event.invocationResult[0].type).equals('Put');
     done();
   });
 });
